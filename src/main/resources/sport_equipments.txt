@@ -1,0 +1,2 @@
+title:goggles 22; price:55;category:swimming;material:polycarbonate; renter:none; type:goggles;
+title:goggles 18; price:37;category:swimming;material:polycarbonate; renter:none; type:goggles;

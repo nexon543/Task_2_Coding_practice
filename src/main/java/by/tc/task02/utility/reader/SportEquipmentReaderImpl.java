@@ -1,7 +1,6 @@
-package by.tc.task02.utility.source_reader;
+package by.tc.task02.utility.reader;
 
-import by.tc.task02.utility.source_reader.SourceNameReader;
-import by.tc.task02.utility.source_reader.SportEquipmentReader;
+import by.tc.task02.model.SportEquipment;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -13,6 +12,7 @@ public class SportEquipmentReaderImpl implements SportEquipmentReader {
     private String filePath;
     private BufferedReader fileReader;
 
+    public SportEquipmentReaderImpl(){}
 
     @Override
     public void openConnection() throws FileNotFoundException {

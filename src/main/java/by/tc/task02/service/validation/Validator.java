@@ -5,8 +5,13 @@ import by.tc.task02.model.criteria.Criteria;
 
 public class Validator {
 
-    public static <E> boolean criteriaValidator(Criteria<E> criteria) {
+    public static boolean criteriaValidator(Criteria criteria) {
 
         return true;
     }
+
+    private boolean checkSportEquipmentType(){
+        return true;
+    }
+
 }

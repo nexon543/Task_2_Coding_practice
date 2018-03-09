@@ -2,6 +2,7 @@ package by.tc.task02.service.validation;
 
 
 import by.tc.task02.model.criteria.Criteria;
+import by.tc.task02.model.criteria.SearchCriteria;
 
 import java.util.Map;
 import java.util.Set;
@@ -30,16 +31,16 @@ public class CriteriaChecker {
         return criteriaValue.compareTo(applianceValue) == compareCondition;
     }
 
-    public <E> boolean check(Map<String, String> applianceProperties, Criteria<E> criteria) {
-        Set<Map.Entry<E, Object>> criteriaSet = criteria.getCriteria().entrySet();
+    public <E> boolean check(Map<String, String> sportEquipmentProperties, Criteria criteria) {
+        Set<Map.Entry<SearchCriteria, Object>> criteriaSet = criteria.getCriteria().entrySet();
         //iteration through all criterias
-        for (Map.Entry<E, Object> criteriaEntry : criteriaSet) {
-            E criteriaKey = criteriaEntry.getKey();
+        for (Map.Entry<SearchCriteria, Object> criteriaEntry : criteriaSet) {
+            SearchCriteria criteriaKey = criteriaEntry.getKey();
             String criteriaName = criteriaKey.toString();
             int compareCondition = criteria.getCompareCondition(criteriaKey);
             Object criteriaValue = criteriaEntry.getValue();
             //checking value of appliance property associated with current criteria by criteriaName
-            if (!checkSingleCriteria(criteriaValue, compareCondition, applianceProperties.get(criteriaName)))
+            if (!checkSingleCriteria(criteriaValue, compareCondition, sportEquipmentProperties.get(criteriaName.toLowerCase())))
                 return false;
         }
         return true;
@@ -47,7 +48,7 @@ public class CriteriaChecker {
 
     private boolean checkSingleCriteria(Object criteriaValue, int compareCondition, String applianceFieldValue) {
         SportEquipmentFieldDataType valueType = SportEquipmentFieldDataType.valueOf(criteriaValue.getClass().getSimpleName().toUpperCase());
-        if (valueType != null)
+        if (valueType != null) {
             switch (valueType) {
                 case INTEGER:
                     int applianceIntFieldValue = Integer.parseInt(applianceFieldValue);
@@ -61,6 +62,7 @@ public class CriteriaChecker {
                     return checkString((String) criteriaValue, applianceFieldValue);
                 default://TODO: add Logger
             }
+        }
         return true;
     }
 }
