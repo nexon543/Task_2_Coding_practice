@@ -1,4 +1,4 @@
-package by.tc.task02.utility.reader;
+package by.tc.task02.utility.source;
 
 import java.util.ResourceBundle;
 

@@ -8,8 +8,6 @@ import by.tc.task02.service.exception.ServiceException;
 public class Main {
     public static void main(String[] args) throws ServiceException {
         ShopPresenter presenter = new ShopPresenterImpl();
-        presenter.initUser();
-        presenter.showAvailableSportEquipment();
-
+        presenter.mainMenu();
     }
 }

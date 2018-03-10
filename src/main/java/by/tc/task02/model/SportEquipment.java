@@ -14,12 +14,10 @@ public class SportEquipment {
 
     @Override
     public String toString() {
-        return "SportEquipment{" +
-                "category=" + category +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", renter='" + renter + '\'' +
-                '}';
+        return "category=" + category +
+                "; title='" + title +
+                "; price=" + price +
+                "; renter='" + renter;
     }
 
     public void setRenter(String renter) {

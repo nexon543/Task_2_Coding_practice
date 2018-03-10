@@ -7,10 +7,19 @@ public class Criteria {
     public static final int MORE = -1;
     public static final int LESS = 1;
     public static final int EQUALS = 0;
+    private boolean isCriteriaReversed =false;
     //Optional
     private String sportEquipmentTitle;
     private Map<SearchCriteria, Object> criteria = new HashMap<SearchCriteria, Object>();
     private Map<SearchCriteria, Integer> compareCondition = new HashMap<SearchCriteria, Integer>();
+
+    public boolean isCriteriaReversed() {
+        return isCriteriaReversed;
+    }
+
+    public void setCriteriaReversed(boolean criteriaReversed) {
+        isCriteriaReversed = criteriaReversed;
+    }
 
     public void add(SearchCriteria searchCriteria, Object value) {
         criteria.put(searchCriteria, value);

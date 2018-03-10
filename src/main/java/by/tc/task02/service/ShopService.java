@@ -18,9 +18,7 @@ public interface ShopService {
 
     Map<SportEquipmentType, Integer> getAllAvailableCount();
 
-    List<SportEquipment> getAvailable(SportEquipmentType sportEquipmentType) throws ServiceException;
-
-    void saveData();
+    List<SportEquipment> getAvailableOfType(SportEquipmentType sportEquipmentType) throws ServiceException;
 
     boolean rentSportEquipment(SportEquipment sportEquipment) throws ServiceException;
 }

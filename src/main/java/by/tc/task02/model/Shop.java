@@ -2,13 +2,14 @@ package by.tc.task02.model;
 
 import java.util.*;
 
-public class Shop extends SportEquipment {
+public class Shop {
+
     private List<SportEquipment> available;
     private Map<SportEquipmentType, Integer> availableCount;
 
     public Shop(){
         available=new ArrayList<>();
-        availableCount=new EnumMap<SportEquipmentType, Integer>(SportEquipmentType.class);
+        availableCount=new EnumMap<>(SportEquipmentType.class);
     }
 
     public void addAvailable(SportEquipment se){
@@ -18,6 +19,9 @@ public class Shop extends SportEquipment {
         availableCount.put(type, count++);
     }
 
+    public boolean removeAvailable(SportEquipment sportEquipment){
+        return available.remove(sportEquipment);
+    }
     public List<SportEquipment> getAvailable() {
         return available;
     }

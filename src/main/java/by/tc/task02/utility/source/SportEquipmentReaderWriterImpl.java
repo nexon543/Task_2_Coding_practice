@@ -1,28 +1,33 @@
-package by.tc.task02.utility.reader;
+package by.tc.task02.utility.source;
 
-import by.tc.task02.model.SportEquipment;
+import java.io.*;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-public class SportEquipmentReaderImpl implements SportEquipmentReader {
+public class SportEquipmentReaderWriterImpl implements SportEquipmentReaderWriter {
 
     private String filePath;
     private BufferedReader fileReader;
+    //private BufferedWriter fileWriter;
 
-    public SportEquipmentReaderImpl(){}
+    public SportEquipmentReaderWriterImpl() throws IOException {
+        setSourceNameFromProperties();
+        openConnection();
+    }
 
-    @Override
-    public void openConnection() throws FileNotFoundException {
+    private void openConnection() throws IOException {
         FileReader fileReader = new FileReader(filePath);
+        //FileWriter fileWriter = new FileWriter(filePath);
         this.fileReader = new BufferedReader(fileReader);
+        //this.fileWriter = new BufferedWriter(fileWriter);
     }
 
     public String read() throws IOException {
         return fileReader.readLine();
     }
+
+    /*@Override
+    public void write(String line) throws IOException {
+        fileWriter.write(line);
+    }*/
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -35,6 +40,7 @@ public class SportEquipmentReaderImpl implements SportEquipmentReader {
 
     public void close() throws IOException {
         fileReader.close();
+        //fileWriter.close();
     }
 
     public String getFilePath() {

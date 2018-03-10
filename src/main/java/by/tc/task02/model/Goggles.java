@@ -24,9 +24,9 @@ public class Goggles extends SportEquipment {
 
     @Override
     public String toString() {
-        return super.toString()+" Goggles{" +
+        return "Goggles{" +
                 "material='" + material + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
     @Override

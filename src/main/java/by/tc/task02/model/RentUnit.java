@@ -25,6 +25,9 @@ public class RentUnit {
         return false;
     }
 
+    public boolean removeUnit(SportEquipment sportEquipment){
+        return units.remove(sportEquipment);
+    }
 
     @Override
     public boolean equals(Object o) {

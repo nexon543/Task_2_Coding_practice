@@ -34,6 +34,7 @@ public class CriteriaChecker {
     public <E> boolean check(Map<String, String> sportEquipmentProperties, Criteria criteria) {
         Set<Map.Entry<SearchCriteria, Object>> criteriaSet = criteria.getCriteria().entrySet();
         //iteration through all criterias
+        boolean result = true;
         for (Map.Entry<SearchCriteria, Object> criteriaEntry : criteriaSet) {
             SearchCriteria criteriaKey = criteriaEntry.getKey();
             String criteriaName = criteriaKey.toString();
@@ -41,9 +42,9 @@ public class CriteriaChecker {
             Object criteriaValue = criteriaEntry.getValue();
             //checking value of appliance property associated with current criteria by criteriaName
             if (!checkSingleCriteria(criteriaValue, compareCondition, sportEquipmentProperties.get(criteriaName.toLowerCase())))
-                return false;
+                result = false;
         }
-        return true;
+        return criteria.isCriteriaReversed() ? !result : result;
     }
 
     private boolean checkSingleCriteria(Object criteriaValue, int compareCondition, String applianceFieldValue) {

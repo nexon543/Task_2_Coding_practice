@@ -1,4 +1,4 @@
-package by.tc.task02.utility.reader;
+package by.tc.task02.utility.source;
 
 public class DBParameter {
     public static final String CONFIG_FILE_PATH = "config";

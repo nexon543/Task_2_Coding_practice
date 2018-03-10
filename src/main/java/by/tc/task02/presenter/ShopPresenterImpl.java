@@ -15,6 +15,11 @@ import java.util.TreeMap;
 
 public class ShopPresenterImpl implements ShopPresenter {
 
+    private static String ENTER_USERNAME_MESSAGE = "Please, enter your account name: ";
+    public static String ENTER_RENTED_QUIPMENT_MESSAGE = "Which one would you like to rent? Enter the number: ";
+    public static String MAIN_MENY_MESSAGE = "Hello! How can I help you? Enter the number: ";
+    public static String RENT_SUCCEED = "You have rented: ";
+    public static String RENT_FAILD = "Sorry, you are not available to rent.";
     private ShopService shopService;
     private String renter;
     private Scanner scanner;
@@ -28,31 +33,85 @@ public class ShopPresenterImpl implements ShopPresenter {
         scanner = new Scanner(System.in);
     }
 
-    @Override
-    public void initUser() {
-        System.out.println("Please, enter your account name: ");
+    private int getChoiceInt(String message) {
+        System.out.println(message);
+        int choice = 0;
         if (scanner.hasNext()) {
-            renter = scanner.nextLine();
+            choice = scanner.nextInt();
+        }
+        return choice;
+    }
+
+    private String getChoiceString(String message) {
+        System.out.println(message);
+        String choice = null;
+        if (scanner.hasNext()) {
+            choice = scanner.next();
+        }
+        return choice;
+    }
+
+    private void printMainMenu() {
+        System.out.println("1. Enter account\n" +
+                "2. See the number of sport equipments\n" +
+                "3. Get list of all sport equipments\n" +
+                "4. Get list of my rented equipments\n" +
+                "5. See rented equipments of all users\n");
+    }
+
+    public void mainMenu() throws ServiceException {
+        int choice = -1;
+        while (choice != 0) {
+            printMainMenu();
+            choice = getChoiceInt(MAIN_MENY_MESSAGE);
+            serviceMainMenuChoice(choice);
         }
     }
 
-    @Override
-    public int showAvailableSportEquipment() throws ServiceException {
+    private void serviceMainMenuChoice(int choice) throws ServiceException {
+        switch (choice) {
+            case 1:
+                renter = getChoiceString(ENTER_USERNAME_MESSAGE);
+                System.out.println("You have entered as: " + renter);
+                shopService.setRenter(renter);
+                break;
+            case 2:
+                PrintSportEquipment.printEquipmentTypeMenuMap(shopService.getAllAvailableCount());
+                System.out.println("Go to menu number 3 to choose specific product");
+                break;
+            case 3:
+                showAvailableSportEquipmentAndRent();
+                break;
+            case 4:
+
+                break;
+            case 5:
+                break;
+        }
+    }
+
+    private void showAvailableSportEquipmentAndRent() throws ServiceException {
         List<SportEquipment> available = shopService.getAllAvailable();
-        Map<Integer, SportEquipment> menuMap=getMenuMap(available);
-        menuMap.forEach((k,v)-> System.out.println(k+") "+v));
-        System.out.println("Which one do you want to rent? ");
-        lastChoice=scanner.nextInt();
-        objectOfChoice=menuMap.get(lastChoice);
-        return lastChoice;
+        Map<Integer, SportEquipment> menuMap = getMenuMap(available);
+        menuMap.forEach((k, v) -> System.out.println(k + ") " + v));
+        System.out.println(ENTER_RENTED_QUIPMENT_MESSAGE);
+        lastChoice = scanner.nextInt();
+        objectOfChoice = menuMap.get(lastChoice);
+        try {
+            if (shopService.rentSportEquipment(objectOfChoice)) {
+                System.out.println(RENT_SUCCEED+objectOfChoice);
+            } else {
+                System.out.println(RENT_FAILD);
+            }
+        }
+        catch(ServiceException se){System.out.println(RENT_FAILD);}
     }
 
 
     private Map<SportEquipmentType, Integer> getTypeMenuMap(Map<SportEquipmentType, Integer> sportEquipmentQuantity) {
-        Map<SportEquipmentType, Integer> counterAvailableTypes=shopService.getAllAvailableCount();
+        Map<SportEquipmentType, Integer> counterAvailableTypes = shopService.getAllAvailableCount();
         Map menuMap = new TreeMap();
         Integer recordNumber = 1;
-
         return menuMap;
     }
 
@@ -65,14 +124,4 @@ public class ShopPresenterImpl implements ShopPresenter {
         return menuMap;
     }
 
-    @Override
-    public int showSportEquipmentOfType(SportEquipmentType sportEquipmentType) throws ServiceException {
-        PrintSportEquipment.printList(shopService.getAvailable(sportEquipmentType));
-        return scanner.nextInt();
-    }
-
-    @Override
-    public void rentSportEquipment() {
-
-    }
 }

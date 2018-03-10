@@ -23,10 +23,10 @@ public class PrintSportEquipment {
         }
     }
 
-    public static void printMenuMap(Map<SportEquipment, Integer> menuMap) {
+    public static void printEquipmentsMenuMap(Map<SportEquipment, Integer> menuMap) {
         menuMap.forEach((k, v) -> System.out.println(v + ") " + k));
     }
-    public static void printTypeMenuMap(Map<SportEquipmentType, Integer> menuMap) {
+    public static void printEquipmentTypeMenuMap(Map<SportEquipmentType, Integer> menuMap) {
         menuMap.forEach((k, v) -> System.out.println(v + ") " + k));
     }
 
