@@ -11,7 +11,6 @@ import by.tc.task02.model.criteria.Criteria;
 import by.tc.task02.model.criteria.CriteriaConstants;
 import by.tc.task02.model.criteria.SearchCriteria;
 import by.tc.task02.service.exception.ServiceException;
-import by.tc.task02.service.validation.CriteriaChecker;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<SportEquipment> getRentedSportEquipments() throws ServiceException {
+    public List<SportEquipment> getCurrentUserRentedSportEquipments() throws ServiceException {
         return rentUnitForUser.getUnits();
     }
 
@@ -61,8 +60,9 @@ public class ShopServiceImpl implements ShopService {
             List<SportEquipment> sportEquipments;
             Criteria criteria = new Criteria();
             criteria.add(SearchCriteria.RENTER, CriteriaConstants.NO_RENTER);
-            criteria.isCriteriaReversed();
+            criteria.setCriteriaReversed(true);
             sportEquipments = dao.find(criteria);
+            sportEquipments.addAll(getCurrentUserRentedSportEquipments());
             return sportEquipments;
         } catch (DAOException ex) {
             throw new ServiceException(ServiceException.FILE_NAME_ERROR);
@@ -108,9 +108,10 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public boolean rentSportEquipment(SportEquipment sportEquipment) throws ServiceException {
-        if (renter.equals(CriteriaConstants.NO_RENTER)) {
+        if (renter.equals(CriteriaConstants.NO_RENTER) || !isRenAvailableForUser()) {
             throw new ServiceException(ServiceException.RENTER_ERROR);
         }
+
         if (shop.removeAvailable(sportEquipment)) {
             Criteria criteria = new Criteria();
             criteria.add(SearchCriteria.TITLE, sportEquipment.getTitle());
@@ -128,4 +129,7 @@ public class ShopServiceImpl implements ShopService {
         return false;
     }
 
+    private boolean isRenAvailableForUser(){
+        return rentUnitForUser.getUnits().size()<3;
+    }
 }

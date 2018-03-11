@@ -27,7 +27,7 @@ public class PrintSportEquipment {
         menuMap.forEach((k, v) -> System.out.println(v + ") " + k));
     }
     public static void printEquipmentTypeMenuMap(Map<SportEquipmentType, Integer> menuMap) {
-        menuMap.forEach((k, v) -> System.out.println(v + ") " + k));
+        menuMap.forEach((k, v) -> System.out.println(k + " - " + v));
     }
 
 }

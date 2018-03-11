@@ -120,7 +120,7 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
                     record = sportEquipmentRecordParser.createRecord(updatedRecordObject);
                     isUpdated = true;
                 }
-                newFileBufferedWriter.write(record);
+                newFileBufferedWriter.write(record+"\n");
             }
             newFileBufferedWriter.close();
         } catch (Exception ex) {

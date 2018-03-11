@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ShopService {
     List<SportEquipment> setRenter(String renter) throws ServiceException;
 
-    List<SportEquipment> getRentedSportEquipments() throws ServiceException;
+    List<SportEquipment> getCurrentUserRentedSportEquipments() throws ServiceException;
 
     List<SportEquipment> getAllRented() throws ServiceException;
 

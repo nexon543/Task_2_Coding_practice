@@ -22,14 +22,16 @@ public class SportEquipmentRecordParserImpl implements SportEquipmentRecordParse
 
     @Override
     public String createRecord(SportEquipment sportEquipment) {
-        SportEquipmentType sportEquipmentType = SportEquipmentType.valueOf(sportEquipment.getClass().getSimpleName());
+        String className=sportEquipment.getClass().getSimpleName();
+        SportEquipmentType sportEquipmentType = SportEquipmentType.valueOf(className.toUpperCase());
         StringBuilder record = new StringBuilder("title:").append(sportEquipment.getTitle())
                 .append("; price:").append(sportEquipment.getPrice())
                 .append("; category:").append(sportEquipment.getCategory()).append(";renter:")
                 .append(sportEquipment.getRenter());
         switch (sportEquipmentType) {
             case GOGGLES:
-                record.append(";material:" + ((Goggles) sportEquipment).getMaterial());
+                record.append(";material:" + ((Goggles) sportEquipment).getMaterial())
+                        .append(";type:"+sportEquipmentType.toString().toLowerCase()+";");
                 break;
         }
         return record.toString();

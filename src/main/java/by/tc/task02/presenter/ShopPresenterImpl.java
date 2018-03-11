@@ -20,6 +20,7 @@ public class ShopPresenterImpl implements ShopPresenter {
     public static String MAIN_MENY_MESSAGE = "Hello! How can I help you? Enter the number: ";
     public static String RENT_SUCCEED = "You have rented: ";
     public static String RENT_FAILD = "Sorry, you are not available to rent.";
+    public static String USER_RENT_LIST_MESSAGE="List of your rented sport equipments:\n";
     private ShopService shopService;
     private String renter;
     private Scanner scanner;
@@ -83,9 +84,11 @@ public class ShopPresenterImpl implements ShopPresenter {
                 showAvailableSportEquipmentAndRent();
                 break;
             case 4:
-
+                System.out.println(USER_RENT_LIST_MESSAGE);
+                PrintSportEquipment.printList(shopService.getCurrentUserRentedSportEquipments());
                 break;
             case 5:
+                PrintSportEquipment.printList(shopService.getAllRented());
                 break;
         }
     }

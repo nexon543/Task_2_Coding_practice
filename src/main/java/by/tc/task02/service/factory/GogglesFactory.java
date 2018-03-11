@@ -1,5 +1,6 @@
 package by.tc.task02.service.factory;
 
+import by.tc.task02.model.Category;
 import by.tc.task02.model.Goggles;
 import by.tc.task02.model.SportEquipment;
 import by.tc.task02.model.criteria.SearchCriteria;
@@ -21,6 +22,9 @@ public class GogglesFactory extends AbstractSportEquipmentFactory {
     protected void setsSportEquipmentField(String propertyName, String propertyValue) {
         SearchCriteria fieldName=SearchCriteria.valueOf(propertyName.toUpperCase());
         switch (fieldName){
+            case CATEGORY:
+                goggles.setCategory(Category.valueOf(propertyValue.toUpperCase()));
+                break;
             case PRICE:
                 goggles.setPrice(getInt(propertyValue));
                 break;
