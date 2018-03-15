@@ -15,9 +15,9 @@ public class SportEquipment {
     @Override
     public String toString() {
         return "category=" + category +
-                "; title='" + title +
+                "; title=" + title +
                 "; price=" + price +
-                "; renter='" + renter;
+                "; renter=" + renter;
     }
 
     public void setRenter(String renter) {

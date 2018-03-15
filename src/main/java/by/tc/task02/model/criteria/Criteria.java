@@ -8,8 +8,7 @@ public class Criteria {
     public static final int LESS = 1;
     public static final int EQUALS = 0;
     private boolean isCriteriaReversed =false;
-    //Optional
-    private String sportEquipmentTitle;
+
     private Map<SearchCriteria, Object> criteria = new HashMap<SearchCriteria, Object>();
     private Map<SearchCriteria, Integer> compareCondition = new HashMap<SearchCriteria, Integer>();
 
@@ -28,14 +27,6 @@ public class Criteria {
     public void add(SearchCriteria searchCriteria, Object value, int compareCondition) {
         criteria.put(searchCriteria, value);
         addCompareCondition(searchCriteria, compareCondition);
-    }
-
-    public String getSportEquipmentTitle() {
-        return sportEquipmentTitle;
-    }
-
-    public void setApplianceType(String sportEquipmentTitle) {
-        this.sportEquipmentTitle = sportEquipmentTitle;
     }
 
     public void addCompareCondition(SearchCriteria criteria, int compareConditionValue) {

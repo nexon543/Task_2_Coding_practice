@@ -16,11 +16,12 @@ import java.util.TreeMap;
 public class ShopPresenterImpl implements ShopPresenter {
 
     private static String ENTER_USERNAME_MESSAGE = "Please, enter your account name: ";
-    public static String ENTER_RENTED_QUIPMENT_MESSAGE = "Which one would you like to rent? Enter the number: ";
-    public static String MAIN_MENY_MESSAGE = "Hello! How can I help you? Enter the number: ";
-    public static String RENT_SUCCEED = "You have rented: ";
-    public static String RENT_FAILD = "Sorry, you are not available to rent.";
-    public static String USER_RENT_LIST_MESSAGE="List of your rented sport equipments:\n";
+    private static String ENTER_RENTED_QUIPMENT_MESSAGE = "Which one would you like to rent? Enter the number: ";
+    private static String MAIN_MENY_MESSAGE = "Hello! How can I help you? Enter the number: ";
+    private static String RENT_SUCCEED = "You have rented: ";
+    private static String RENT_FAILD = "Sorry, you are not available to rent.";
+    private static String USER_RENT_LIST_MESSAGE="List of your rented sport equipments:";
+
     private ShopService shopService;
     private String renter;
     private Scanner scanner;
@@ -108,14 +109,6 @@ public class ShopPresenterImpl implements ShopPresenter {
             }
         }
         catch(ServiceException se){System.out.println(RENT_FAILD);}
-    }
-
-
-    private Map<SportEquipmentType, Integer> getTypeMenuMap(Map<SportEquipmentType, Integer> sportEquipmentQuantity) {
-        Map<SportEquipmentType, Integer> counterAvailableTypes = shopService.getAllAvailableCount();
-        Map menuMap = new TreeMap();
-        Integer recordNumber = 1;
-        return menuMap;
     }
 
     private Map<Integer, SportEquipment> getMenuMap(List<SportEquipment> sportEquipments) {

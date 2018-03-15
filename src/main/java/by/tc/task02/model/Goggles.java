@@ -3,7 +3,7 @@ package by.tc.task02.model;
 import java.util.Objects;
 
 public class Goggles extends SportEquipment {
-    String material;
+    private String material;
 
     public String getMaterial() {
         return material;

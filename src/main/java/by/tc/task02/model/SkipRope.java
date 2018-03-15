@@ -3,7 +3,7 @@ package by.tc.task02.model;
 import java.util.Objects;
 
 public class SkipRope extends SportEquipment {
-    int length;
+    private int length;
 
     @Override
     public boolean equals(Object o) {

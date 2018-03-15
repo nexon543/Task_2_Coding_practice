@@ -10,15 +10,13 @@ import by.tc.task02.model.criteria.CriteriaConstants;
 import by.tc.task02.model.criteria.SearchCriteria;
 import by.tc.task02.service.factory.SportEquipmentFactoryClient;
 import by.tc.task02.service.validation.CriteriaChecker;
-import by.tc.task02.utility.source.SportEquipmentReaderWriter;
-import by.tc.task02.utility.source.SportEquipmentReaderWriterImpl;
+import by.tc.task02.utility.source.SportEquipmentReader;
+import by.tc.task02.utility.source.SportEquipmentReaderImpl;
+import by.tc.task02.utility.source.SportEquipmentWriter;
+import by.tc.task02.utility.source.SportEquipmentWriterImpl;
 import by.tc.task02.utility.source.parser.SportEquipmentRecordParser;
 import by.tc.task02.utility.source.parser.SportEquipmentRecordParserImpl;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -26,18 +24,11 @@ import java.util.Map;
 
 public class SportEquipmentDAOImpl implements SportEquipmentDAO {
 
-    private SportEquipmentReaderWriter sportEquipmentReader;
     private SportEquipmentRecordParser sportEquipmentRecordParser;
     private CriteriaChecker criteriaChecker;
     private SportEquipmentFactoryClient sportEquipmentFactoryClient;
 
-    public SportEquipmentDAOImpl() throws DAOException {
-        try {
-            sportEquipmentReader = new SportEquipmentReaderWriterImpl();
-        } catch (IOException ex) {
-            throw new DAOException(DAOException.SOURCE_ERROR);
-        }
-        sportEquipmentReader.setSourceNameFromProperties();
+    public SportEquipmentDAOImpl() {
         sportEquipmentRecordParser = new SportEquipmentRecordParserImpl();
         criteriaChecker = new CriteriaChecker();
         sportEquipmentFactoryClient = new SportEquipmentFactoryClient();
@@ -45,12 +36,11 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
 
     @Override
     public Map<SportEquipmentType, Integer> getAllAvailableCount() throws DAOException {
-        List<SportEquipment> sportEquipments = new ArrayList<>();
         Map<SportEquipmentType, Integer> availableCount = new EnumMap<>(SportEquipmentType.class);
         Criteria criteria = new Criteria();
         criteria.add(SearchCriteria.RENTER, CriteriaConstants.NO_RENTER);
         String record;
-        try (SportEquipmentReaderWriter sportEquipmentReader = new SportEquipmentReaderWriterImpl()) {
+        try (SportEquipmentReader sportEquipmentReader = new SportEquipmentReaderImpl()) {
             while ((record = sportEquipmentReader.read()) != null) {
                 Map<String, String> properties = sportEquipmentRecordParser.parse(record);
                 boolean isValid = criteriaChecker.check(properties, criteria);
@@ -76,7 +66,7 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
 
         List<SportEquipment> sportEquipments = new ArrayList<>();
         String record;
-        try (SportEquipmentReaderWriter sportEquipmentReader = new SportEquipmentReaderWriterImpl()) {
+        try (SportEquipmentReader sportEquipmentReader = new SportEquipmentReaderImpl()) {
             while ((record = sportEquipmentReader.read()) != null) {
                 Map<String, String> properties = sportEquipmentRecordParser.parse(record);
                 boolean isValid = criteriaChecker.check(properties, criteria);
@@ -92,9 +82,9 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
     }
 
     public void insert(List<SportEquipment> sportEquipments) throws DAOException {
-        try (SportEquipmentReaderWriter sportEquipmentReader = new SportEquipmentReaderWriterImpl()) {
+        try (SportEquipmentWriter sportEquipmentWriter = new SportEquipmentWriterImpl(ConstantsDAO.TMP_FILE_PATH)) {
             for (SportEquipment sportEquipment : sportEquipments) {
-                //sportEquipmentReader.write(sportEquipment.toString());
+                sportEquipmentWriter.write(sportEquipment.toString());
             }
         } catch (Exception ex) {
             throw new DAOException(DAOException.SOURCE_ERROR);
@@ -104,15 +94,9 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
     public boolean updateFirst(Criteria criteriaOfUpdatedRecord, SportEquipment updatedRecordObject) throws DAOException {
         String record;
         boolean isUpdated = false;
-        File tmpFile = new File(ConstantsDAO.TMP_FILE_PATH);
-        try {
-            tmpFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (SportEquipmentReaderWriter sportEquipmentReader = new SportEquipmentReaderWriterImpl()) {
-            FileWriter newFileWriter = new FileWriter(tmpFile);
-            BufferedWriter newFileBufferedWriter=new BufferedWriter(newFileWriter);
+
+        try (SportEquipmentReader sportEquipmentReader = new SportEquipmentReaderImpl();
+             SportEquipmentWriter sportEquipmentWriter = new SportEquipmentWriterImpl(ConstantsDAO.TMP_FILE_PATH)) {
             while ((record = sportEquipmentReader.read()) != null) {
                 Map<String, String> properties = sportEquipmentRecordParser.parse(record);
                 boolean isValid = criteriaChecker.check(properties, criteriaOfUpdatedRecord);
@@ -120,16 +104,12 @@ public class SportEquipmentDAOImpl implements SportEquipmentDAO {
                     record = sportEquipmentRecordParser.createRecord(updatedRecordObject);
                     isUpdated = true;
                 }
-                newFileBufferedWriter.write(record+"\n");
+                sportEquipmentWriter.write(record + "\n");
             }
-            newFileBufferedWriter.close();
         } catch (Exception ex) {
             throw new DAOException(DAOException.SOURCE_ERROR);
         }
-        String currentFilePath = sportEquipmentReader.getFilePath();
-        File currentFile = new File(currentFilePath);
-        currentFile.delete();
-        tmpFile.renameTo(currentFile);
+
         return isUpdated;
     }
 }
